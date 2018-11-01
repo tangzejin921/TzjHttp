@@ -1,9 +1,13 @@
 package com.tzj.http.response;
 
+
+import okhttp3.Response;
+
 /**
  * http 返回类
  */
-public class HttpResponse<T> {
+public class HttpResponse<B> implements IResponse<B>{
+    protected Response response;
     /**
      * http返回码
      */
@@ -23,7 +27,13 @@ public class HttpResponse<T> {
     /**
      *
      */
-    protected T body;
+    protected B body;
+
+    public HttpResponse(Response response) {
+        this.response = response;
+        httpCode = response.code();
+        httpMsg = response.message();
+    }
 
     /**
      * http 协议的 code
@@ -47,13 +57,24 @@ public class HttpResponse<T> {
     }
 
     /**
+     * 业务的
+     */
+    public boolean isOk() {
+        return code == 1;
+    }
+
+    /**
      * 业务的 msg
      */
     public String msg() {
         return msg;
     }
 
-    public T body() {
+    public void setBody(B body) {
+        this.body = body;
+    }
+
+    public B body() {
         return body;
     }
 

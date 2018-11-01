@@ -1,10 +1,9 @@
 package com.tzj.http.http;
 
 import com.tzj.http.callback.IHttpCallBack;
-import com.tzj.http.request.IOkRequest;
+import com.tzj.http.callback.ThreadCallBack;
 import com.tzj.http.request.IRequest;
-import com.tzj.http.response.HoldCall;
-import com.tzj.http.response.HoldResponse;
+import com.tzj.http.response.IResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -13,46 +12,49 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * okhttp 的实现
+ */
 public class OkHttp implements IHttp {
     private static OkHttpClient okHttpClient;
+
     static {
-        okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .build();
+                .connectTimeout(30, TimeUnit.SECONDS);
+        okHttpClient = builder.build();
     }
-    public static void init(OkHttpClient okHttpClient){
+
+    public static void init(OkHttpClient okHttpClient) {
         OkHttp.okHttpClient = okHttpClient;
     }
 
     @Override
-    public void post(IRequest request,IHttpCallBack callBack) {
-        IOkRequest okRequest = (IOkRequest) request;
+    public void post(IRequest request, IHttpCallBack callBack) {
         Response response = null;
-        HoldCall holdCall = null;
+        Call call = null;
+        callBack = new ThreadCallBack(request, callBack);
         try {
-            Call call = okHttpClient.newCall(
+            call = okHttpClient.newCall(
                     new Request.Builder()
-                            .url(okRequest.url())
-                            .post(okRequest.okBody())
+                            .url(request.url())
+                            .post(request.okBody())
                             .build());
-            holdCall = new HoldCall(call);
             response = call.execute();
-            if (callBack!=null){
-                callBack.onResponse(holdCall, new HoldResponse(response));
-            }
+            //构建返回体
+            IResponse iResponse = callBack.response(response);
+            //调用返回
+            callBack.onResponse(call, iResponse);
         } catch (Exception e) {
-            if (callBack!=null){
-                callBack.onFailure(holdCall, e);
-            }
+            //异常
+            callBack.onFailure(call, e);
         } finally {
             if (response != null) {
                 response.close();
             }
-            if (callBack!=null){
-                callBack.onFinish();
-            }
+            //结束
+            callBack.onFinish();
         }
     }
 }

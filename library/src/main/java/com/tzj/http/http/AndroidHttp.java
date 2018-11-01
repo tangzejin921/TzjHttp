@@ -11,7 +11,8 @@ import java.net.URLConnection;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
- * 没完成
+ * 举个例子而已
+ * 没写完
  */
 @Deprecated
 public class AndroidHttp implements IHttp{

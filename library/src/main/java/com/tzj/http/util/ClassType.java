@@ -5,6 +5,7 @@ import java.lang.reflect.Type;
 
 /**
  *  为了获取T
+ *  注意：T 必须是具体的类型，不能是其他泛型传过来的，如 T,E 什么的
  */
 public abstract class ClassType<T> {
 

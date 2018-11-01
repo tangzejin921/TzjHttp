@@ -1,9 +1,11 @@
 package com.tzj.http.util;
 
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 public class UtilJSON {
+    public static final String NULLJSON = "{}";
     private static IJSON utilJSON = new FastJson();
 
     public static void init(IJSON utilJSON) {
@@ -19,6 +21,10 @@ public class UtilJSON {
     }
 
     public static <T> T toObj(String json, ClassType<T> clazz) {
+        return utilJSON.toObj(json,clazz);
+    }
+
+    public static <T> T toObj(String json, Type clazz) {
         return utilJSON.toObj(json,clazz);
     }
 }

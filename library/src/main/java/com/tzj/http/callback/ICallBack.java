@@ -1,7 +1,9 @@
 package com.tzj.http.callback;
 
-import com.tzj.http.response.HoldCall;
-import com.tzj.http.response.HoldResponse;
+
+import com.tzj.http.response.IResponse;
+
+import okhttp3.Call;
 
 /**
  * onOKResponse 按照业务再拆分为,
@@ -9,18 +11,18 @@ import com.tzj.http.response.HoldResponse;
  * 失败，
  * 没权限
  */
-public interface ICallBack extends IOkCallBack{
+public interface ICallBack<T> extends IOkCallBack<T>{
 
     /**
      * 业务成功
      */
-    void onSuccess(HoldCall call, HoldResponse response);
+    void onSuccess(Call call, IResponse<T> response);
     /**
      * 业务失败
      */
-    void onErr(HoldCall call, HoldResponse response);
+    void onErr(Call call, IResponse<T> response);
     /**
      * 没权限，比如没登录
      */
-    void onPermission(HoldCall call, HoldResponse response);
+    void onPermission(Call call, IResponse<T> response);
 }

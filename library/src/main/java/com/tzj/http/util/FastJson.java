@@ -3,9 +3,13 @@ package com.tzj.http.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * fastJosn的实现
+ */
 public class FastJson implements IJSON {
 
     @Override
@@ -28,5 +32,10 @@ public class FastJson implements IJSON {
     @Override
     public <T> T toObj(String text, ClassType<T> clazz) {
         return JSON.parseObject(text, clazz.getType());
+    }
+
+    @Override
+    public <T> T toObj(String text, Type type) {
+        return JSON.parseObject(text, type);
     }
 }
