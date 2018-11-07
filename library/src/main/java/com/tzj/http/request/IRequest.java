@@ -2,10 +2,12 @@ package com.tzj.http.request;
 
 import android.os.Handler;
 
+import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 
 import java.util.Map;
 
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public interface IRequest {
@@ -13,6 +15,7 @@ public interface IRequest {
      * 回调用的 handler
      */
     Handler handler();
+
     /**
      * url
      */
@@ -29,13 +32,24 @@ public interface IRequest {
     String contentType();
 
     /**
+     * 缓存方式
+     */
+    CacheType cacheType();
+
+    /**
      * mapBody
      */
-    Map<String,Object> mapBody();
+    Map<String, Object> mapBody();
+
     /**
      * okhttp 的 body
      */
     RequestBody okBody();
+
+    /**
+     * okhttp 的 Request
+     */
+    Request request();
 
     /**
      * http 调用

@@ -4,12 +4,13 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 
-public class AndroidHandler implements IPlatformHandler{
+public class AndroidHandler implements IPlatformHandler {
 
     /**
      * 通用ui回调
      */
-    public static Handler mHandler = new Handler(Looper.getMainLooper());;
+    public static Handler mHandler = new Handler(Looper.getMainLooper());
+    ;
 
     @Override
     public void post(Runnable runnable) {

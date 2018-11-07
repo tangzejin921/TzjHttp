@@ -1,5 +1,8 @@
 package com.tzj.http.http;
 
+import com.tzj.http.cache.CacheImp;
+import com.tzj.http.cache.CacheType;
+import com.tzj.http.cache.ICache;
 import com.tzj.http.callback.IHttpCallBack;
 import com.tzj.http.callback.ThreadCallBack;
 import com.tzj.http.request.IRequest;
@@ -31,27 +34,61 @@ public class OkHttp implements IHttp {
     }
 
     @Override
-    public void post(IRequest request, IHttpCallBack callBack) {
-        Response response = null;
+    public void post(IRequest iRequest, IHttpCallBack callBack) {
+        Request request = null;
         Call call = null;
-        callBack = new ThreadCallBack(request, callBack);
+        ICache cache = null;
+        Response cacheResponse = null;
+        Response response = null;
+        callBack = new ThreadCallBack(iRequest, callBack);
         try {
-            call = okHttpClient.newCall(
-                    new Request.Builder()
-                            .url(request.url())
-                            .post(request.okBody())
-                            .build());
-            response = call.execute();
-            //构建返回体
-            IResponse iResponse = callBack.response(response);
-            //调用返回
-            callBack.onResponse(call, iResponse);
+            request = iRequest.request();
+            call = okHttpClient.newCall(request);
+            cache = new CacheImp(request.url());
+            //返回缓存
+            if (iRequest.cacheType() == CacheType.ONLY_USER_CACHE ||
+                    iRequest.cacheType() == CacheType.USER_CACHE ||
+                    iRequest.cacheType() == CacheType.USER_CACHE_AND_RESPONSE) {
+                try {
+                    cacheResponse = cache.get(request);
+                    if (cacheResponse != null) {
+                        //构建返回体
+                        IResponse iResponse = callBack.response(cacheResponse);
+                        //调用返回
+                        callBack.onResponse(call, iResponse);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            //网络请求
+            if (iRequest.cacheType() == CacheType.DEFAULT ||
+                    (iRequest.cacheType() == CacheType.USER_CACHE && cacheResponse == null) ||
+                    iRequest.cacheType() == CacheType.USER_CACHE_AND_RESPONSE) {
+                response = call.execute();
+                //更新缓存
+                if (iRequest.cacheType() == CacheType.USER_CACHE ||
+                        iRequest.cacheType() == CacheType.USER_CACHE_AND_RESPONSE) {
+                    cache.put(response);
+                }
+                //构建返回体
+                IResponse iResponse = callBack.response(response);
+                //调用返回
+                callBack.onResponse(call, iResponse);
+            }
+
         } catch (Exception e) {
             //异常
             callBack.onFailure(call, e);
         } finally {
+            if (cacheResponse != null) {
+                cacheResponse.close();
+            }
             if (response != null) {
                 response.close();
+            }
+            if (cache != null) {
+                cache.close();
             }
             //结束
             callBack.onFinish();

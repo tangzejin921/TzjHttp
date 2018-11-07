@@ -15,6 +15,7 @@ import okhttp3.Response;
 public final class ThreadCallBack implements IHttpCallBack {
     private IHttpCallBack callBack;
     private IRequest request;
+
     public ThreadCallBack(IRequest request,IHttpCallBack callBack) {
         this.callBack = callBack;
         this.request = request;

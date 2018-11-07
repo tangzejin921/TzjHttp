@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <application >
+    <application
+        android:name="com.tzj.http.HttpApplication">
         <activity
             android:name="module.ModuleActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
@@ -17,6 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="module.ModuleActivity2"/>
     </application>
 
 </manifest>

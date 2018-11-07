@@ -1,19 +1,20 @@
-package com.tzj.http;
+package com.tzj.http.request;
 
 
 import android.os.Handler;
 
+import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 import com.tzj.http.http.IHttp;
 import com.tzj.http.http.OkHttp;
 import com.tzj.http.platform.PlatformHandler;
-import com.tzj.http.request.IRequest;
 import com.tzj.http.util.UtilJSON;
 
 import java.util.Iterator;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public class BaseLibHttp implements IRequest {
@@ -26,6 +27,12 @@ public class BaseLibHttp implements IRequest {
     protected Handler handler;
     public IRequest handler(Handler handler) {
         this.handler = handler;
+        return this;
+    }
+
+    protected CacheType cacheType = CacheType.DEFAULT;
+    public BaseLibHttp cacheType(CacheType type) {
+        this.cacheType = type;
         return this;
     }
 
@@ -57,6 +64,11 @@ public class BaseLibHttp implements IRequest {
     }
 
     @Override
+    public CacheType cacheType() {
+        return cacheType;
+    }
+
+    @Override
     public Map<String, Object> mapBody() {
         return UtilJSON.toMap(this);
     }
@@ -69,6 +81,14 @@ public class BaseLibHttp implements IRequest {
             s = "";
         }
         return RequestBody.create(parse, s);
+    }
+
+    @Override
+    public Request request() {
+        return new Request.Builder()
+                .url(url())
+                .post(okBody())
+                .build();
     }
 
     @Override
