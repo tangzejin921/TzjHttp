@@ -2,6 +2,7 @@ package com.tzj.http.callback;
 
 
 
+import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.response.IResponse;
 
 import java.io.IOException;
@@ -13,6 +14,10 @@ import okhttp3.Response;
  * 进一步将http 200 分为业务成功,失败
  */
 public interface IHttpCallBack<T> {
+    /**
+     * 开始调用
+     */
+    void onStart();
     /**
      * 创建 IResponse
      */
@@ -32,4 +37,5 @@ public interface IHttpCallBack<T> {
      */
     void onFinish();
 
+    IPlatformHandler handler();
 }

@@ -1,5 +1,7 @@
 package module;
 
+import com.tzj.http.cache.CacheType;
+import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.request.BaseLibHttp;
 import com.tzj.http.callback.OkCallBack;
 import com.tzj.http.response.IResponse;
@@ -28,22 +30,24 @@ public class TestHttp extends BaseLibHttp {
 //    }
 
     public static void main(String[] args){
+        OkCallBack callBack = new OkCallBack<String>() {
+            @Override
+            public void onOKResponse(Call call, IResponse<String> response) {
+                System.out.println(response.body());
+            }
+
+            @Override
+            public void onFailure(Call call, Exception e) {
+                System.out.println("onFailure");
+            }
+
+            @Override
+            public void onFinish() {
+                System.out.println("onFinish");
+            }
+        };
+        callBack = null;
         new TestHttp()
-                .post(new OkCallBack<String>() {
-                    @Override
-                    public void onOKResponse(Call call, IResponse<String> response) {
-                        System.out.println(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call call, Exception e) {
-                        System.out.println("onFailure");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        System.out.println("onFinish");
-                    }
-                });
+                .post(callBack);
     }
 }

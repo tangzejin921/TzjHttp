@@ -1,7 +1,5 @@
 package com.tzj.http.request;
 
-import android.os.Handler;
-
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 
@@ -11,11 +9,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 
 public interface IRequest {
-    /**
-     * 回调用的 handler
-     */
-    Handler handler();
-
     /**
      * url
      */

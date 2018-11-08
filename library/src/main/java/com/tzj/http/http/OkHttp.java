@@ -35,14 +35,14 @@ public class OkHttp implements IHttp {
 
     @Override
     public void post(IRequest iRequest, IHttpCallBack callBack) {
-        Request request = null;
         Call call = null;
         ICache cache = null;
         Response cacheResponse = null;
         Response response = null;
-        callBack = new ThreadCallBack(iRequest, callBack);
+        callBack = new ThreadCallBack(callBack);
+        callBack.onStart();
         try {
-            request = iRequest.request();
+            Request request = iRequest.request();
             call = okHttpClient.newCall(request);
             cache = new CacheImp(request.url());
             //返回缓存

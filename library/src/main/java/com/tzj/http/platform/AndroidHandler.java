@@ -2,23 +2,37 @@ package com.tzj.http.platform;
 
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.Message;
 
-public class AndroidHandler implements IPlatformHandler {
+public class AndroidHandler extends Handler implements IPlatformHandler {
 
-    /**
-     * 通用ui回调
-     */
-    public static Handler mHandler = new Handler(Looper.getMainLooper());
-    ;
+    protected boolean closed = false;
 
-    @Override
-    public void post(Runnable runnable) {
-        mHandler.post(runnable);
+    public boolean isClsed() {
+        return closed;
     }
 
     @Override
-    public void execute(Runnable runnable) {
-        AsyncTask.THREAD_POOL_EXECUTOR.execute(runnable);
+    public void close(boolean b) {
+        closed = b;
+        if (closed) {
+            removeMessages(0);
+        }
+    }
+
+    @Override
+    public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
+        if (closed) {
+            return false;
+        }
+        return super.sendMessageAtTime(msg, uptimeMillis);
+    }
+
+    @Override
+    public boolean execute(Runnable runnable) {
+        if (!closed) {
+            AsyncTask.THREAD_POOL_EXECUTOR.execute(runnable);
+        }
+        return !closed;
     }
 }

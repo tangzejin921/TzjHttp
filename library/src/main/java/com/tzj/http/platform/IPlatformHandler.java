@@ -1,18 +1,23 @@
 package com.tzj.http.platform;
 
 /**
- * Java 情况下不分 ui 非 ui
+ * 1.android 情况下 分 ui 非 ui
+ * 2.可关闭
  */
 public interface IPlatformHandler {
-
-    /**
-     * UI线程
-     */
-    void post(Runnable runnable);
-
     /**
      * 非UI线程
      */
-    void execute(Runnable runnable);
+    boolean execute(Runnable r);
+    /**
+     * UI线程
+     */
+    boolean post(Runnable r);
+    boolean postDelayed(Runnable r, long delayMillis);
+    boolean isClsed();
 
+    /**
+     * @param b 是否关闭
+     */
+    void close(boolean b);
 }

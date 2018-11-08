@@ -1,12 +1,11 @@
 package com.tzj.http.request;
 
 
-import android.os.Handler;
-
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 import com.tzj.http.http.IHttp;
 import com.tzj.http.http.OkHttp;
+import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.util.UtilJSON;
 
@@ -24,21 +23,11 @@ public class BaseLibHttp implements IRequest {
         BaseLibHttp.http = http;
     }
 
-    protected Handler handler;
-    public IRequest handler(Handler handler) {
-        this.handler = handler;
-        return this;
-    }
-
     protected CacheType cacheType = CacheType.DEFAULT;
+
     public BaseLibHttp cacheType(CacheType type) {
         this.cacheType = type;
         return this;
-    }
-
-    @Override
-    public Handler handler() {
-        return handler;
     }
 
     @Override
@@ -77,7 +66,7 @@ public class BaseLibHttp implements IRequest {
     public RequestBody okBody() {
         MediaType parse = MediaType.parse(contentType());
         String s = UtilJSON.toJson(this);
-        if (UtilJSON.NULLJSON.equals(s)){
+        if (UtilJSON.NULLJSON.equals(s)) {
             s = "";
         }
         return RequestBody.create(parse, s);
@@ -94,10 +83,16 @@ public class BaseLibHttp implements IRequest {
     @Override
     public void post(final IHttpCallBack callBack) {
         final IRequest request = this;
-        PlatformHandler.execute(new Runnable() {
+        IPlatformHandler handler = null;
+        if (callBack == null) {
+            handler = PlatformHandler.getInstance();
+        }else{
+            handler = callBack.handler();
+        }
+        handler.execute(new Runnable() {
             @Override
             public void run() {
-                http.post(request,callBack);
+                http.post(request, callBack);
             }
         });
     }

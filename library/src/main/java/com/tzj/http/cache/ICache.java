@@ -9,6 +9,7 @@ public interface ICache {
     int VERSION = 201105;
     int ENTRY_COUNT = 1;
     int ENTRY_METADATA = 0;
+
     Response get(Request request) throws IOException;
 
     void put(Response response);
