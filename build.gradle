@@ -20,7 +20,7 @@ allprojects {
         jcenter()
     }
 }
-rootProject.extensions.add("library", Type.isAPP.name())
+rootProject.extensions.add("library", Type.isModule.name())
 
 enum Type {
     isAPP,
