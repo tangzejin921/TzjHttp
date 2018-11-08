@@ -11,9 +11,7 @@ import com.tzj.http.util.IToast;
 import com.tzj.http.util.UtilToast;
 
 
-
 public class ModuleActivity extends Activity implements View.OnClickListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

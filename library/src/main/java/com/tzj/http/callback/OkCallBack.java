@@ -20,9 +20,9 @@ import okhttp3.Response;
 public abstract class OkCallBack<T> implements IOkCallBack<T> {
     protected IPlatformHandler mHandler = PlatformHandler.getInstance();
 
-    public OkCallBack() {
-    }
-
+    /**
+     * 强制传 Handler 为了可以关闭
+     */
     public OkCallBack(IPlatformHandler handler) {
         this.mHandler = handler;
     }

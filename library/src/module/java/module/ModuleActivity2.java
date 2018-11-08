@@ -38,7 +38,6 @@ public class ModuleActivity2 extends Activity implements View.OnClickListener {
 
                     }
                 });
-//        handler.close(true);
     }
 
     @Override

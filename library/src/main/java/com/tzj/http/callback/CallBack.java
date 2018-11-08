@@ -1,6 +1,7 @@
 package com.tzj.http.callback;
 
 
+import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.response.IResponse;
 import com.tzj.http.util.UtilToast;
 
@@ -10,6 +11,10 @@ import okhttp3.Call;
  * ICallBack 的一个实现
  */
 public abstract class CallBack<T> extends OkCallBack<T> implements ICallBack<T>{
+
+    public CallBack(IPlatformHandler handler) {
+        super(handler);
+    }
 
     @Override
     public void onErr(Call call, IResponse<T> response) {
