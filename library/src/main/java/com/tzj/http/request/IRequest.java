@@ -48,4 +48,8 @@ public interface IRequest {
      * http 调用
      */
     void post(IHttpCallBack callBack);
+    /**
+     * http 调用
+     */
+    void postDelay(int time,IHttpCallBack callBack);
 }
