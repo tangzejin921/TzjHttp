@@ -51,5 +51,5 @@ public interface IRequest {
     /**
      * http 调用
      */
-    void postDelay(int time,IHttpCallBack callBack);
+    void postDelay(IHttpCallBack callBack,int time);
 }

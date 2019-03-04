@@ -82,11 +82,11 @@ public class BaseLibHttp implements IRequest {
 
     @Override
     public void post(final IHttpCallBack callBack) {
-        postDelay(0,callBack);
+        postDelay(callBack,0);
     }
 
     @Override
-    public void postDelay(int time,final IHttpCallBack callBack) {
+    public void postDelay(final IHttpCallBack callBack,int time) {
         final IRequest request = this;
         IPlatformHandler handler = null;
         if (callBack == null) {
