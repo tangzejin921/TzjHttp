@@ -41,7 +41,7 @@ public class CacheImp implements ICache {
                 new File(path),
                 VERSION,
                 ENTRY_COUNT,
-                1024 * 1024 * 10
+                1024 * 1024 * 50
         );
         try {
             cache.initialize();

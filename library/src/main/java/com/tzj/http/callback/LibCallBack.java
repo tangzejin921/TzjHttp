@@ -10,9 +10,9 @@ import okhttp3.Call;
 /**
  * ICallBack 的一个实现
  */
-public abstract class CallBack<T> extends OkCallBack<T> implements ICallBack<T>{
+public abstract class LibCallBack<T> extends OkCallBack<T> implements ICallBack<T>{
 
-    public CallBack(IPlatformHandler handler) {
+    public LibCallBack(IPlatformHandler handler) {
         super(handler);
     }
 

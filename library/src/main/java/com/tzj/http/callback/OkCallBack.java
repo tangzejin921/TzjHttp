@@ -15,7 +15,7 @@ import okhttp3.Call;
 import okhttp3.Response;
 
 /**
- *
+ * 区分 http 200 的情况
  */
 public abstract class OkCallBack<T> implements IOkCallBack<T> {
     protected IPlatformHandler mHandler = PlatformHandler.getInstance();
@@ -24,7 +24,9 @@ public abstract class OkCallBack<T> implements IOkCallBack<T> {
      * 强制传 Handler 为了可以关闭
      */
     public OkCallBack(IPlatformHandler handler) {
-        this.mHandler = handler;
+        if (handler != null){
+            this.mHandler = handler;
+        }
     }
 
     @Override

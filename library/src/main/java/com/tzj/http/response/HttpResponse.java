@@ -38,6 +38,7 @@ public class HttpResponse<B> implements IResponse<B>{
     /**
      * http 协议的 code
      */
+    @Override
     public int httpCode() {
         return httpCode;
     }
@@ -45,6 +46,7 @@ public class HttpResponse<B> implements IResponse<B>{
     /**
      * http 协议的 msg
      */
+    @Override
     public String httpMsg() {
         return httpMsg;
     }
@@ -52,6 +54,7 @@ public class HttpResponse<B> implements IResponse<B>{
     /**
      * 业务的 code
      */
+    @Override
     public int code() {
         return code;
     }
@@ -59,6 +62,7 @@ public class HttpResponse<B> implements IResponse<B>{
     /**
      * 业务的
      */
+    @Override
     public boolean isOk() {
         return code == 1;
     }
@@ -66,6 +70,7 @@ public class HttpResponse<B> implements IResponse<B>{
     /**
      * 业务的 msg
      */
+    @Override
     public String msg() {
         return msg;
     }
@@ -73,7 +78,7 @@ public class HttpResponse<B> implements IResponse<B>{
     public void setBody(B body) {
         this.body = body;
     }
-
+    @Override
     public B body() {
         return body;
     }
