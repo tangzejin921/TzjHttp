@@ -57,13 +57,11 @@ public class UtilReplace {
             bufReader.close();
             return Result;
         } catch (Exception e) {
-            e.printStackTrace();
             return "{}";
         }finally {
             try {
                 inputReader.close();
             } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }

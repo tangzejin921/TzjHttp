@@ -35,6 +35,13 @@ public class BaseLibHttp implements IRequest {
     public String methed() {
         String temp = getClass().getSimpleName().split("\\$")[0];
         temp = temp.replaceFirst(temp.charAt(0)+"",(temp.charAt(0)+"").toLowerCase());
+        //方法替换
+        String str = UtilReplace.getStrFromAssets("api/methed.json");
+        Map map = UtilJSON.toMap(str);
+        str = (String) map.get(temp);
+        if (str != null){
+            temp = str;
+        }
         return temp;
     }
 
