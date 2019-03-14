@@ -5,9 +5,22 @@ import com.tzj.http.request.BaseLibHttp;
 import com.tzj.http.callback.OkCallBack;
 import com.tzj.http.response.IResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.Call;
 
 public class TestHttp extends BaseLibHttp {
+
+    public String name="小花";
+    public String age = "10";
+    public TestItem item = new TestItem();
+    public List<TestItem> list = new ArrayList<>();
+
+    public TestHttp() {
+        list.add(new TestItem());
+        list.add(new TestItem());
+    }
 
 //    @Override
 //    public RequestBody okBody() {

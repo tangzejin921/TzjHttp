@@ -8,6 +8,7 @@ import com.tzj.http.http.OkHttp;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.util.UtilJSON;
+import com.tzj.http.util.UtilReplace;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -28,6 +29,13 @@ public class BaseLibHttp implements IRequest {
     public BaseLibHttp cacheType(CacheType type) {
         this.cacheType = type;
         return this;
+    }
+
+    @Override
+    public String methed() {
+        String temp = getClass().getSimpleName().split("\\$")[0];
+        temp = temp.replaceFirst(temp.charAt(0)+"",(temp.charAt(0)+"").toLowerCase());
+        return temp;
     }
 
     @Override
@@ -63,9 +71,14 @@ public class BaseLibHttp implements IRequest {
     }
 
     @Override
+    public Map<String, Object> replaceMap(Map<String, Object> map){
+        return UtilReplace.replaceIn(map,methed());
+    }
+
+    @Override
     public RequestBody okBody() {
         MediaType parse = MediaType.parse(contentType());
-        String s = UtilJSON.toJson(this);
+        String s = UtilJSON.toJson(replaceMap(mapBody()));
         if (UtilJSON.NULLJSON.equals(s)) {
             s = "";
         }

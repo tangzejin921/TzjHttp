@@ -10,6 +10,10 @@ import okhttp3.RequestBody;
 
 public interface IRequest {
     /**
+     * 接口名
+     */
+    String methed();
+    /**
      * url
      */
     String url();
@@ -34,6 +38,10 @@ public interface IRequest {
      */
     Map<String, Object> mapBody();
 
+    /**
+     *  将入参字段名根据配置改掉
+     */
+    Map<String, Object> replaceMap(Map<String, Object> map);
     /**
      * okhttp 的 body
      */

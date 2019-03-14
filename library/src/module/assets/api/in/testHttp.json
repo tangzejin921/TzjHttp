@@ -1,0 +1,12 @@
+{
+  "name":"httpName",
+  "age":"httpAge",
+  "item,httpItem":{
+    "key":"httpKey",
+    "value":"httpValue"
+  },
+  "list,httpList":[{
+    "key":"httpKey",
+    "value":"httpValue"
+  }]
+}

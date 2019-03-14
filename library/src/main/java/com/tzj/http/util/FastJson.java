@@ -14,6 +14,9 @@ public class FastJson implements IJSON {
 
     @Override
     public Map toMap(Object obj) {
+        if (obj instanceof String){
+            obj = JSON.parse((String) obj);
+        }
         if (obj instanceof Map) {
             return (Map) obj;
         }
