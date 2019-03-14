@@ -31,7 +31,7 @@ public class UtilReplace {
                     if (temp != null){
                         return temp;
                     }
-                }else if (s.equals(key)){
+                }else if (s.equalsIgnoreCase(key)){
                     return path+File.separator+s;
                 }
             }

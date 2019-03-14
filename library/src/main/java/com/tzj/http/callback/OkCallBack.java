@@ -45,7 +45,8 @@ public abstract class OkCallBack<T> implements IOkCallBack<T> {
             //这里 将泛型T放HttpResponse中无法得到具体类型，所以在这里都到泛型
             Map map = UtilJSON.toMap(string);
             map = UtilReplace.replaceOut(map,getClass().getSimpleName());
-            String s = JSON.toJSONString(map);// FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
+            // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
+            String s = JSON.toJSONString(map);
             T t = UtilJSON.toObj(s, ClassType.genericSuperType(getClass()));
             r.setBody(t);
         }
