@@ -22,17 +22,17 @@ public class UtilReplace {
     /**
      * 寻找 key 的路径
      */
-    public static String findPath(String path,String key){
+    public static String findPath(String path, String key) {
         try {
             String[] apis = HttpApplication.mCtx.getAssets().list(path);
             for (String s : apis) {
-                if (new File(s).isDirectory()){
-                    String temp = findPath(path+ File.separator+s, key);
-                    if (temp != null){
+                if (new File(s).isDirectory()) {
+                    String temp = findPath(path + File.separator + s, key);
+                    if (temp != null) {
                         return temp;
                     }
-                }else if (s.equalsIgnoreCase(key)){
-                    return path+File.separator+s;
+                } else if (s.equalsIgnoreCase(key)) {
+                    return path + File.separator + s;
                 }
             }
         } catch (IOException e) {
@@ -58,9 +58,11 @@ public class UtilReplace {
             return Result;
         } catch (Exception e) {
             return "{}";
-        }finally {
+        } finally {
             try {
-                inputReader.close();
+                if (inputReader != null) {
+                    inputReader.close();
+                }
             } catch (IOException e) {
             }
         }
@@ -69,14 +71,14 @@ public class UtilReplace {
     /**
      * 入参替换
      */
-    public static Map<String, Object> replaceIn(Map<String, Object> map,String key){
+    public static Map<String, Object> replaceIn(Map<String, Object> map, String key) {
         String api = findPath("api/in", key + ".json");
-        if (api != null){
+        if (api != null) {
             try {
                 String jsonStr = getStrFromAssets(api);
-                Map<String,Object> templtate = UtilJSON.toMap(jsonStr);
-                replaceMap(map,templtate);
-            }catch (Exception e){
+                Map<String, Object> templtate = UtilJSON.toMap(jsonStr);
+                replaceMap(map, templtate);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -87,14 +89,14 @@ public class UtilReplace {
     /**
      * 出参替换
      */
-    public static Map<String, Object> replaceOut(Map<String, Object> map,String key){
+    public static Map<String, Object> replaceOut(Map<String, Object> map, String key) {
         String api = findPath("api/out", key + ".json");
-        if (api != null){
+        if (api != null) {
             try {
                 String jsonStr = getStrFromAssets(api);
-                Map<String,Object> templtate = UtilJSON.toMap(jsonStr);
-                replaceMap(map,templtate);
-            }catch (Exception e){
+                Map<String, Object> templtate = UtilJSON.toMap(jsonStr);
+                replaceMap(map, templtate);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -104,43 +106,43 @@ public class UtilReplace {
     /**
      * 入参替换
      */
-    private static void replaceMap(Map<String,Object> src,Map<String,Object> des){
+    private static void replaceMap(Map<String, Object> src, Map<String, Object> des) {
         Iterator<Map.Entry<String, Object>> iterator = des.entrySet().iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Map.Entry<String, Object> next = iterator.next();
             String k = next.getKey();
             Object v = next.getValue();
-            if (v instanceof String){
-                src.put((String) v,src.remove(k));
-            }else if (v instanceof List){
+            if (v instanceof String) {
+                src.put((String) v, src.remove(k));
+            } else if (v instanceof List) {
                 List<Object> newList = null;
-                if (k.contains(",")){
+                if (k.contains(",")) {
                     String[] split = k.split(",");
                     newList = (List<Object>) src.remove(split[0]);
-                    src.put(split[1],newList);
-                }else{
+                    src.put(split[1], newList);
+                } else {
                     newList = (List<Object>) src.get(k);
                 }
                 Object obj = ((List) v).get(0);
-                if (obj instanceof Map){
+                if (obj instanceof Map) {
                     for (Object item : newList) {
-                        replaceMap((Map<String, Object>)item,(Map<String, Object>) obj);
+                        replaceMap((Map<String, Object>) item, (Map<String, Object>) obj);
                     }
-                }else{
-                    throw new RuntimeException("没有实现的内容"+k+"："+obj.getClass());
+                } else {
+                    throw new RuntimeException("没有实现的内容" + k + "：" + obj.getClass());
                 }
-            }else if (v instanceof Map){
-                Map<String,Object> newMap = null;
-                if (k.contains(",")){
+            } else if (v instanceof Map) {
+                Map<String, Object> newMap = null;
+                if (k.contains(",")) {
                     String[] split = k.split(",");
                     newMap = (Map<String, Object>) src.remove(split[0]);
-                    src.put(split[1],newMap);
-                }else{
+                    src.put(split[1], newMap);
+                } else {
                     newMap = (Map<String, Object>) src.get(k);
                 }
-                replaceMap(newMap,(Map<String, Object>) v);
-            }else{
-                throw new RuntimeException("没有实现的内容"+k+"："+v.getClass());
+                replaceMap(newMap, (Map<String, Object>) v);
+            } else {
+                throw new RuntimeException("没有实现的内容" + k + "：" + v.getClass());
             }
         }
     }
