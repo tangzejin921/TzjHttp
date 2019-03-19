@@ -8,7 +8,7 @@ public interface IPlatformHandler {
     /**
      * 非UI线程
      */
-    boolean execute(Runnable r);
+    boolean execute(Runnable r,long delayMillis);
     /**
      * UI线程
      */

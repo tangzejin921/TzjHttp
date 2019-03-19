@@ -114,7 +114,7 @@ public class BaseLibHttp implements IRequest {
         }else{
             handler = callBack.handler();
         }
-        handler.postDelayed(new Runnable() {
+        handler.execute(new Runnable() {
             @Override
             public void run() {
                 http.post(request, callBack);

@@ -8,6 +8,7 @@ public class AndroidHandler extends Handler implements IPlatformHandler {
 
     protected boolean closed = false;
 
+    @Override
     public boolean isClsed() {
         return closed;
     }
@@ -29,9 +30,18 @@ public class AndroidHandler extends Handler implements IPlatformHandler {
     }
 
     @Override
-    public boolean execute(Runnable runnable) {
+    public boolean execute(final Runnable runnable,long delayMillis) {
         if (!closed) {
-            AsyncTask.THREAD_POOL_EXECUTOR.execute(runnable);
+            if (delayMillis > 0){
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        AsyncTask.THREAD_POOL_EXECUTOR.execute(runnable);
+                    }
+                },delayMillis);
+            }else{
+                AsyncTask.THREAD_POOL_EXECUTOR.execute(runnable);
+            }
         }
         return !closed;
     }

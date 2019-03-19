@@ -14,7 +14,7 @@ public class JavaHandler implements IPlatformHandler{
     }
 
     @Override
-    public boolean execute(Runnable r) {
+    public boolean execute(Runnable r,long delayMillis) {
         if (!closed){
             r.run();
         }
