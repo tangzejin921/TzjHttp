@@ -25,6 +25,9 @@ public class UtilReplace {
     public static String findPath(String path, String key) {
         try {
             String[] apis = HttpApplication.mCtx.getAssets().list(path);
+            if(apis == null){
+                return null;
+            }
             for (String s : apis) {
                 if (new File(s).isDirectory()) {
                     String temp = findPath(path + File.separator + s, key);
