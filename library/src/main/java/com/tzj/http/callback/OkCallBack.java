@@ -57,7 +57,9 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
 
     @Override
     public IResponse response(Response response) throws IOException {
-        return new HttpResponse<T>(response);
+        HttpResponse<T> httpResponse = new HttpResponse<>(response);
+        httpResponse = httpResponse.jsonResponse();
+        return fillBody(httpResponse);
     }
 
 
@@ -70,8 +72,6 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     @Override
     public void onResponse(Call call, IResponse<T> response) {
         if (response.httpCode() == 200) {
-            response = response.jsonResponse();
-            response = fillBody(response);
             onOKResponse(call, response);
         } else {
             onNoResponse(call, response);
@@ -93,9 +93,8 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     /**
      * 填充 body
      */
-    protected IResponse fillBody(IResponse<T> r){
-        if (r instanceof HttpResponse){
-            HttpResponse res = (HttpResponse) r;
+    protected IResponse fillBody(HttpResponse<T> res){
+        if (res.isOk()){
             Map map = UtilJSON.toMap(res.tempBody().toString());
             map = UtilReplace.replaceOut(map, key);
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
@@ -103,6 +102,6 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             T body = UtilJSON.toObj(s, getRspType());
             res.setBody(body);
         }
-        return r;
+        return res;
     }
 }
