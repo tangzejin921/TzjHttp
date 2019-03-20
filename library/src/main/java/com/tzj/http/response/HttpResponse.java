@@ -3,6 +3,8 @@ package com.tzj.http.response;
 
 import com.tzj.http.util.UtilJSON;
 
+import java.io.IOException;
+
 import okhttp3.Response;
 
 /**
@@ -104,9 +106,9 @@ public class HttpResponse<B> implements IResponse<B>{
      * 解析 返回的外层
      */
     @Override
-    public <T extends IResponse> T jsonResponse(){
+    public <T extends IResponse> T jsonResponse() throws IOException {
         if (response != null){
-            HttpResponse res = UtilJSON.toObj(response.body().toString(), getClass());
+            HttpResponse res = UtilJSON.toObj(response.body().string(), getClass());
             res.httpCode = httpCode;
             res.httpMsg = httpMsg;
         }
