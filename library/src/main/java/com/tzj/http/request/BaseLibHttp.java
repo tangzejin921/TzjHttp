@@ -125,7 +125,7 @@ public class BaseLibHttp implements IRequest {
     }
 
     @Override
-    public Type getRspType() {
+    public Type rspType() {
         Class<?>[] declaredClasses = getClass().getDeclaredClasses();
         if (declaredClasses != null){
             for (Class c: declaredClasses) {

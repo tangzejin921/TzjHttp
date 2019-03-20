@@ -40,13 +40,13 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     }
 
     @Override
-    public void setRspType(String key, Type type) {
+    public void rspType(String key, Type type) {
         this.key = key;
         this.type = type;
     }
 
     @Override
-    public Type getRspType() {
+    public Type rspType() {
         //这里 将泛型T放HttpResponse中无法得到具体类型，所以在这里得到泛型
         Type rspType = ClassType.genericSuperType(getClass());
         if (rspType == Object.class) {
@@ -100,7 +100,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             map = UtilReplace.replaceOut(map, key);
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
             String s = JSON.toJSONString(map);
-            T body = UtilJSON.toObj(s, getRspType());
+            T body = UtilJSON.toObj(s, rspType());
             res.setBody(body);
         }
         return r;

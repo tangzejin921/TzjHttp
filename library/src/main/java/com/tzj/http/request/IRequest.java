@@ -66,5 +66,5 @@ public interface IRequest {
      * 返回的实体类
      * 名为Rsp的静态内部类
      */
-    Type getRspType();
+    Type rspType();
 }

@@ -102,14 +102,14 @@ public final class ThreadCallBack implements IHttpCallBack {
     }
 
     @Override
-    public void setRspType(String key,Type type) {
+    public void rspType(String key,Type type) {
         //这里不用选择线程
-        callBack.setRspType(key,type);
+        callBack.rspType(key,type);
     }
 
     @Override
-    public Type getRspType() {
+    public Type rspType() {
         //这里应该不会调用到，不用选择线程
-        return callBack.getRspType();
+        return callBack.rspType();
     }
 }

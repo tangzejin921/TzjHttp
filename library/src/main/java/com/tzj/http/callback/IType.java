@@ -15,11 +15,11 @@ public interface IType {
      * @param key
      * @param type 返回的实体类
      */
-    void setRspType(String key,Type type);
+    void rspType(String key,Type type);
 
     /**
      * 如果 CallBack 上没有设置泛型，便取 api 的内部类 Rsp
      * 返回的实体类
      */
-    Type getRspType();
+    Type rspType();
 }

@@ -43,7 +43,7 @@ public class OkHttp implements IHttp {
         callBack.onStart();
         try {
             //返回类型放到 callBack 里
-            callBack.setRspType(iRequest.methed(),iRequest.getRspType());
+            callBack.rspType(iRequest.methed(),iRequest.rspType());
             Request request = iRequest.request();
             call = okHttpClient.newCall(request);
             cache = new CacheImp(request.url());
