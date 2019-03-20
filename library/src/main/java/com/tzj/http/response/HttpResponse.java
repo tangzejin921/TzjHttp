@@ -91,6 +91,7 @@ public class HttpResponse<B> implements IResponse<B>{
 
     public void setBody(B body) {
         tempBody = null;
+        response = null;
         this.body = body;
     }
     @Override
