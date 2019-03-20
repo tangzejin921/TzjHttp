@@ -23,8 +23,8 @@ import okhttp3.Response;
  */
 public abstract class OkCallBack<T> implements IOkCallBack<T>,IType{
     protected IPlatformHandler mHandler = PlatformHandler.getInstance();
-    private Type type;
-    private String key;
+    protected Type type;
+    protected String key;
     /**
      * 强制传 Handler 为了可以关闭
      */
@@ -47,6 +47,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>,IType{
 
     @Override
     public Type getRspType() {
+        //这里 将泛型T放HttpResponse中无法得到具体类型，所以在这里得到泛型
         Type rspType = ClassType.genericSuperType(getClass());
         if (rspType == Object.class){
             rspType = type;
@@ -66,8 +67,8 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>,IType{
     protected IResponse fillBody(Response response,HttpResponse<T> r) throws IOException{
         if (r.httpCode() == 200) {
             String string = response.body().string();
-            //这里 将泛型T放HttpResponse中无法得到具体类型，所以在这里都到泛型
-            Map map = UtilJSON.toMap(string);
+            r = UtilJSON.toObj(string, r.getClass());
+            Map map = UtilJSON.toMap(r.tempBody().toString());
             map = UtilReplace.replaceOut(map,key);
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
             String s = JSON.toJSONString(map);

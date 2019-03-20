@@ -1,6 +1,8 @@
 package com.tzj.http.response;
 
 
+import android.widget.TextView;
+
 import okhttp3.Response;
 
 /**
@@ -28,6 +30,11 @@ public class HttpResponse<B> implements IResponse<B>{
      *
      */
     protected B body;
+    /**
+     * 临时存放，
+     * 用于先解析外层然后解析内层
+     */
+    protected Object tempBody = "{}";
 
     public HttpResponse(Response response) {
         this.response = response;
@@ -76,6 +83,7 @@ public class HttpResponse<B> implements IResponse<B>{
     }
 
     public void setBody(B body) {
+        tempBody = null;
         this.body = body;
     }
     @Override
@@ -83,4 +91,7 @@ public class HttpResponse<B> implements IResponse<B>{
         return body;
     }
 
+    public Object tempBody(){
+        return tempBody;
+    }
 }
