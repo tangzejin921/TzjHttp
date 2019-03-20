@@ -85,6 +85,11 @@ public class BaseLibHttp implements IRequest {
     }
 
     @Override
+    public String cacheKey() {
+        return null;
+    }
+
+    @Override
     public RequestBody okBody() {
         MediaType parse = MediaType.parse(contentType());
         String s = UtilJSON.toJson(replaceMap(mapBody()));

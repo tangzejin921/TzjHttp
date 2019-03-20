@@ -43,6 +43,11 @@ public interface IRequest {
      *  将入参字段名根据配置改掉
      */
     Map<String, Object> replaceMap(Map<String, Object> map);
+
+    /**
+     * 用于缓存的key
+     */
+    String cacheKey();
     /**
      * okhttp 的 body
      */

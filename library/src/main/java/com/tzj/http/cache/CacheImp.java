@@ -29,12 +29,12 @@ import static okhttp3.internal.Util.UTF_8;
 public class CacheImp implements ICache {
     private DiskLruCache cache;
 
-    public CacheImp(HttpUrl url) {
+    public CacheImp(HttpUrl url,String methed) {
         String path = null;
         if (PlatformHandler.isAndroid){
-            path = HttpApplication.mCtx.getCacheDir().getAbsolutePath()+"/http/"+Cache.key(url);
+            path = HttpApplication.mCtx.getCacheDir().getAbsolutePath()+"/http/"+Cache.key(url)+"/"+methed;
         }else{
-            path = "C://http/"+Cache.key(url);
+            path = "C://http/"+Cache.key(url)+"/"+methed;
         }
         cache = DiskLruCache.create(
                 FileSystem.SYSTEM,
@@ -51,8 +51,8 @@ public class CacheImp implements ICache {
     }
 
     @Override
-    public Response get(Request request) throws IOException {
-        String key = key(request);
+    public Response get(Request request,String key) throws IOException {
+        key = key(request,key);
         DiskLruCache.Snapshot snapshot;
         try {
             snapshot = cache.get(key);
@@ -78,12 +78,12 @@ public class CacheImp implements ICache {
     }
 
     @Override
-    public void put(Response response) {
+    public void put(Response response,String key) {
         if (response.code()!=200){
             return;
         }
         try {
-            String key = key(response.request());
+            key = key(response.request(),key);
             DiskLruCache.Editor editor = cache.edit(key);
             if (editor != null) {
                 Sink sink = editor.newSink(ENTRY_METADATA);
@@ -111,9 +111,13 @@ public class CacheImp implements ICache {
     /**
      * 请求体得到key
      */
-    private String key(Request request) throws IOException {
+    private String key(Request request,String key) throws IOException {
         Buffer buffer = new Buffer();
-        request.body().writeTo(buffer);
+        if (key != null){
+            buffer.writeString(key,Charset.defaultCharset());
+        }else{
+            request.body().writeTo(buffer);
+        }
         return buffer.md5().hex();
     }
     private Charset charset(ResponseBody body) {

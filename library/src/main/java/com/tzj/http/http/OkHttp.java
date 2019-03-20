@@ -42,17 +42,18 @@ public class OkHttp implements IHttp {
         callBack = new ThreadCallBack(callBack);
         callBack.onStart();
         try {
+            String methed = iRequest.methed();
             //返回类型放到 callBack 里
-            callBack.rspType(iRequest.methed(),iRequest.rspType());
+            callBack.rspType(methed,iRequest.rspType());
             Request request = iRequest.request();
             call = okHttpClient.newCall(request);
-            cache = new CacheImp(request.url());
+            cache = new CacheImp(request.url(),methed);
             //返回缓存
             if (iRequest.cacheType() == CacheType.ONLY_USER_CACHE ||
                     iRequest.cacheType() == CacheType.USER_CACHE ||
                     iRequest.cacheType() == CacheType.USER_CACHE_AND_RESPONSE) {
                 try {
-                    cacheResponse = cache.get(request);
+                    cacheResponse = cache.get(request,iRequest.cacheKey());
                     if (cacheResponse != null) {
                         //构建返回体
                         IResponse iResponse = callBack.response(cacheResponse);
@@ -71,7 +72,7 @@ public class OkHttp implements IHttp {
                 //更新缓存
                 if (iRequest.cacheType() == CacheType.USER_CACHE ||
                         iRequest.cacheType() == CacheType.USER_CACHE_AND_RESPONSE) {
-                    cache.put(response);
+                    cache.put(response,iRequest.cacheKey());
                 }
                 //构建返回体
                 IResponse iResponse = callBack.response(response);
