@@ -106,12 +106,14 @@ public class HttpResponse<B> implements IResponse<B>{
      * 解析 返回的外层
      */
     @Override
-    public <T extends IResponse> T jsonResponse() throws IOException {
+    public IResponse<B> jsonResponse() throws IOException {
         if (response != null){
             HttpResponse res = UtilJSON.toObj(response.body().string(), getClass());
             res.httpCode = httpCode;
             res.httpMsg = httpMsg;
+            return res;
+        }else{
+            return this;
         }
-        return null;
     }
 }

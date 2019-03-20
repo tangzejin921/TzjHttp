@@ -36,6 +36,6 @@ public interface IResponse<B> {
     /**
      * 返回的外层 json 解析
      */
-    <T extends IResponse> T jsonResponse () throws IOException;
+    IResponse<B> jsonResponse () throws IOException;
 
 }
