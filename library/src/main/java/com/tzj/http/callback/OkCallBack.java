@@ -12,6 +12,7 @@ import com.tzj.http.util.UtilReplace;
 import com.tzj.http.util.UtilToast;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -20,9 +21,10 @@ import okhttp3.Response;
 /**
  * 区分 http 200 的情况
  */
-public abstract class OkCallBack<T> implements IOkCallBack<T> {
+public abstract class OkCallBack<T> implements IOkCallBack<T>,IType{
     protected IPlatformHandler mHandler = PlatformHandler.getInstance();
-
+    private Type type;
+    private String key;
     /**
      * 强制传 Handler 为了可以关闭
      */
@@ -36,19 +38,41 @@ public abstract class OkCallBack<T> implements IOkCallBack<T> {
     public void onStart() {
 
     }
+    
+    @Override
+    public void setRspType(String key,Type type) {
+        this.key = key;
+        this.type = type;
+    }
+
+    @Override
+    public Type getRspType() {
+        Type rspType = ClassType.genericSuperType(getClass());
+        if (rspType == Object.class){
+            rspType = type;
+        }
+        return rspType;
+    }
 
     @Override
     public IResponse response(Response response) throws IOException {
         HttpResponse<T> r = new HttpResponse<T>(response);
+        return fillBody(response,r);
+    }
+
+    /**
+     * 填充 body
+     */
+    protected IResponse fillBody(Response response,HttpResponse<T> r) throws IOException{
         if (r.httpCode() == 200) {
             String string = response.body().string();
             //这里 将泛型T放HttpResponse中无法得到具体类型，所以在这里都到泛型
             Map map = UtilJSON.toMap(string);
-            map = UtilReplace.replaceOut(map,getClass().getSimpleName());
+            map = UtilReplace.replaceOut(map,key);
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
             String s = JSON.toJSONString(map);
-            T t = UtilJSON.toObj(s, ClassType.genericSuperType(getClass()));
-            r.setBody(t);
+            T body = UtilJSON.toObj(s, getRspType());
+            r.setBody(body);
         }
         return r;
     }

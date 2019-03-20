@@ -15,15 +15,16 @@ public abstract class ClassType<T> {
 
     /**
      * 父类传进来的泛型
+     * 如果没有返回 Object
      */
     public static Type genericSuperType(Class c) {
         Type type = c.getGenericSuperclass();
         if (type instanceof ParameterizedType) {
             Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
             if (actualTypeArguments.length > 0) {
-                type = actualTypeArguments[0];
+                return actualTypeArguments[0];
             }
         }
-        return type;
+        return Object.class;
     }
 }

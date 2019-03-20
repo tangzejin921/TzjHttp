@@ -5,6 +5,7 @@ import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.response.IResponse;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -98,5 +99,17 @@ public final class ThreadCallBack implements IHttpCallBack {
         } else {
             return callBack.handler();
         }
+    }
+
+    @Override
+    public void setRspType(String key,Type type) {
+        //这里不用选择线程
+        callBack.setRspType(key,type);
+    }
+
+    @Override
+    public Type getRspType() {
+        //这里应该不会调用到，不用选择线程
+        return callBack.getRspType();
     }
 }

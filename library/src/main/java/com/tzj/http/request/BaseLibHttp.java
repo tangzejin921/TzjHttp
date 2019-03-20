@@ -10,6 +10,8 @@ import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.util.UtilJSON;
 import com.tzj.http.util.UtilReplace;
 
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -120,5 +122,19 @@ public class BaseLibHttp implements IRequest {
                 http.post(request, callBack);
             }
         },time);
+    }
+
+    @Override
+    public Type getRspType() {
+        Class<?>[] declaredClasses = getClass().getDeclaredClasses();
+        if (declaredClasses != null){
+            for (Class c: declaredClasses) {
+                int mod = c.getModifiers();
+                if ((Modifier.STATIC & mod) > 0 && c.getSimpleName().endsWith("Rsp")) {
+                    return c;
+                }
+            }
+        }
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package com.tzj.http.request;
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import okhttp3.Request;
@@ -60,4 +61,10 @@ public interface IRequest {
      * http 调用
      */
     void postDelay(IHttpCallBack callBack,int time);
+
+    /**
+     * 返回的实体类
+     * 名为Rsp的静态内部类
+     */
+    Type getRspType();
 }

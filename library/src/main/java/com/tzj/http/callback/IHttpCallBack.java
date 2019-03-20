@@ -13,7 +13,7 @@ import okhttp3.Response;
 /**
  * 进一步将http 200 分为业务成功,失败
  */
-public interface IHttpCallBack<T> {
+public interface IHttpCallBack<T> extends IType{
     /**
      * 开始调用
      */
