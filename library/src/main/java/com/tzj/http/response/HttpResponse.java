@@ -1,7 +1,7 @@
 package com.tzj.http.response;
 
 
-import android.widget.TextView;
+import com.tzj.http.util.UtilJSON;
 
 import okhttp3.Response;
 
@@ -36,10 +36,15 @@ public class HttpResponse<B> implements IResponse<B>{
      */
     protected Object tempBody = "{}";
 
+    public HttpResponse() {
+
+    }
     public HttpResponse(Response response) {
-        this.response = response;
-        httpCode = response.code();
-        httpMsg = response.message();
+        if (response != null){
+            this.response = response;
+            httpCode = response.code();
+            httpMsg = response.message();
+        }
     }
 
     /**
@@ -93,5 +98,18 @@ public class HttpResponse<B> implements IResponse<B>{
 
     public Object tempBody(){
         return tempBody;
+    }
+
+    /**
+     * 解析 返回的外层
+     */
+    @Override
+    public <T extends IResponse> T jsonResponse(){
+        if (response != null){
+            HttpResponse res = UtilJSON.toObj(response.body().toString(), getClass());
+            res.httpCode = httpCode;
+            res.httpMsg = httpMsg;
+        }
+        return null;
     }
 }

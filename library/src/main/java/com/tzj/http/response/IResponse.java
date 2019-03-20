@@ -31,5 +31,9 @@ public interface IResponse<B> {
      * body 体实例
      */
     B body();
+    /**
+     * 返回的外层 json 解析
+     */
+    <T extends IResponse> T jsonResponse();
 
 }
