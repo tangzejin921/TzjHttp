@@ -19,6 +19,13 @@ public abstract class ClassType<T> {
      */
     public static Type genericSuperType(Class c) {
         Type type = c.getGenericSuperclass();
+        return genericType(type);
+    }
+
+    /**
+     * 得到里面的泛型
+     */
+    public static Type genericType(Type type){
         if (type instanceof ParameterizedType) {
             Type[] actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
             if (actualTypeArguments.length > 0) {

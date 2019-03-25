@@ -13,7 +13,9 @@ import com.tzj.http.util.UtilReplace;
 import com.tzj.http.util.UtilToast;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -102,10 +104,14 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             Object object = map;
             Type type = rspType();
             try {
-                //如果实现了接口 IListKey 将会取出其内容
-                if (IListKey.class.isAssignableFrom((Class<?>) type)){
-                    IListKey o = ((Class<IListKey>) type).newInstance();
-                    object = map.get(o.listKeyName());
+                //是List
+                if (((ParameterizedType)type).getRawType() == List.class){
+                    Type itemType = ClassType.genericType(type);
+                    //如果item实现了接口 IListKey 将会取出其内容
+                    if (IListKey.class.isAssignableFrom((Class<?>) itemType)){
+                        IListKey o = ((Class<IListKey>) itemType).newInstance();
+                        object = map.get(o.listKeyName());
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
