@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.response.HttpResponse;
+import com.tzj.http.response.IListKey;
 import com.tzj.http.response.IResponse;
 import com.tzj.http.util.ClassType;
 import com.tzj.http.util.UtilJSON;
@@ -98,9 +99,20 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             HttpResponse res = (HttpResponse) r;
             Map map = UtilJSON.toMap(res.tempBody().toString());
             map = UtilReplace.replaceOut(map, key);
+            Object object = map;
+            Type type = rspType();
+            try {
+                //如果实现了接口 IListKey 将会取出其内容
+                if (IListKey.class.isAssignableFrom((Class<?>) type)){
+                    IListKey o = ((Class<IListKey>) type).newInstance();
+                    object = map.get(o.listKeyName());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
-            String s = JSON.toJSONString(map);
-            T body = UtilJSON.toObj(s, rspType());
+            String s = JSON.toJSONString(object);
+            T body = UtilJSON.toObj(s, type);
             res.setBody(body);
         }
         return r;

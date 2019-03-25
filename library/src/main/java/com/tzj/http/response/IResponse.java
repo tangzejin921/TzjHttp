@@ -1,6 +1,7 @@
 package com.tzj.http.response;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IResponse<B> {
 
@@ -38,4 +39,15 @@ public interface IResponse<B> {
      */
     IResponse<B> jsonResponse() throws IOException;
 
+    /**
+     * 当没有具体实体类时
+     * 取返回的集合
+     */
+    <T> List<T> keyList(String key, Class<T> c);
+
+    /**
+     * 当没有具体实体类时
+     * 取返回中的 key
+     */
+    String keyString(String key);
 }

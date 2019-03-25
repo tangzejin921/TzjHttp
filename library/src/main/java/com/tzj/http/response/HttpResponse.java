@@ -1,9 +1,15 @@
 package com.tzj.http.response;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tzj.http.util.UtilJSON;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import okhttp3.Response;
 
@@ -116,5 +122,38 @@ public class HttpResponse<B> implements IResponse<B>{
         }else{
             return this;
         }
+    }
+
+    @Override
+    public <T> List<T> keyList(String key, Class<T> c) {
+        JSONObject jsonObject;
+        if (body() instanceof JSONObject){
+            jsonObject = (JSONObject) body();
+        }else{
+            jsonObject = JSON.parseObject(body().toString());
+        }
+        if(jsonObject!=null && jsonObject.containsKey(key)){
+            JSONArray jsonArray = jsonObject.getJSONArray(key);
+            Iterator iterator = jsonArray.iterator();
+            List<T> list = new ArrayList<>();
+            while (iterator.hasNext()){
+                JSONObject next = (JSONObject) iterator.next();
+                T t = JSONObject.toJavaObject(next,c);
+                list.add(t);
+            }
+            return list;
+        }
+        return new ArrayList();
+    }
+
+    @Override
+    public String keyString(String key) {
+        JSONObject temp;
+        if (!(body() instanceof JSONObject)){
+            temp = JSON.parseObject(body().toString());
+        }else{
+            temp = (JSONObject) body();
+        }
+        return temp.getString(key);
     }
 }
