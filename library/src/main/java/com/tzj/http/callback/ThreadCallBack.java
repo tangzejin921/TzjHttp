@@ -20,6 +20,9 @@ public final class ThreadCallBack implements IHttpCallBack {
         this.callBack = callBack;
     }
 
+    /**
+     * ui线程
+     */
     @Override
     public void onStart() {
         if (handler() == null || handler().isClsed()) {
@@ -34,7 +37,9 @@ public final class ThreadCallBack implements IHttpCallBack {
         };
         callBack.handler().post(runnable);
     }
-
+    /**
+     * 子线程
+     */
     @Override
     public IResponse response(Response response) throws IOException {
         if (handler() == null || handler().isClsed()) {
@@ -45,6 +50,18 @@ public final class ThreadCallBack implements IHttpCallBack {
         return callBack.response(response);
     }
 
+    @Override
+    public void onPreResponse(Call call, IResponse response) {
+        if (handler() == null || handler().isClsed()) {
+            callBack = null;
+        }
+        //当前线程
+        callBack.onPreResponse(call,response);
+    }
+
+    /**
+     * ui线程
+     */
     @Override
     public void onResponse(final Call call, final IResponse response) {
         if (handler() == null || handler().isClsed()) {
@@ -59,7 +76,9 @@ public final class ThreadCallBack implements IHttpCallBack {
         };
         callBack.handler().post(runnable);
     }
-
+    /**
+     * ui线程
+     */
     @Override
     public void onFailure(final Call call, final Exception e) {
         if (handler() == null || handler().isClsed()) {
@@ -74,7 +93,9 @@ public final class ThreadCallBack implements IHttpCallBack {
         };
         callBack.handler().post(runnable);
     }
-
+    /**
+     * ui线程
+     */
     @Override
     public void onFinish() {
         if (handler() == null || handler().isClsed()) {

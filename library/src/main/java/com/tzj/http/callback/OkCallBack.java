@@ -65,11 +65,9 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
         return fillBody(httpResponse);
     }
 
-
-
     @Override
-    public void onNoResponse(Call call, IResponse<T> response) {
-        UtilToast.showToast(response.httpMsg());
+    public void onPreResponse(Call call, IResponse<T> response) {
+
     }
 
     @Override
@@ -79,6 +77,11 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
         } else {
             onNoResponse(call, response);
         }
+    }
+
+    @Override
+    public void onNoResponse(Call call, IResponse<T> response) {
+        UtilToast.showToast(response.httpMsg());
     }
 
     @Override

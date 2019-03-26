@@ -57,6 +57,8 @@ public class OkHttp implements IHttp {
                     if (cacheResponse != null) {
                         //构建返回体
                         IResponse iResponse = callBack.response(cacheResponse);
+                        //调用非ui返回
+                        callBack.onPreResponse(call, iResponse);
                         //调用返回
                         callBack.onResponse(call, iResponse);
                     }
@@ -76,6 +78,8 @@ public class OkHttp implements IHttp {
                 }
                 //构建返回体
                 IResponse iResponse = callBack.response(response);
+                //调用非ui返回
+                callBack.onPreResponse(call, iResponse);
                 //调用返回
                 callBack.onResponse(call, iResponse);
             }

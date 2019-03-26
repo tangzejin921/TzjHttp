@@ -14,14 +14,17 @@ import okhttp3.Call;
 public interface ICallBack<T> extends IOkCallBack<T>{
 
     /**
+     * 拆分至 onOKResponse
      * 业务成功
      */
     void onSuccess(Call call, IResponse<T> response);
     /**
+     * 拆分至 onOKResponse
      * 业务失败
      */
     void onErr(Call call, IResponse<T> response);
     /**
+     * 拆分至 onOKResponse
      * 没权限，比如没登录
      */
     void onPermission(Call call, IResponse<T> response);

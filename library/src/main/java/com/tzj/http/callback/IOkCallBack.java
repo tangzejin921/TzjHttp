@@ -11,10 +11,12 @@ import okhttp3.Call;
 public interface IOkCallBack<T> extends IHttpCallBack<T>{
     /**
      * http 200
+     * 拆分至onResponse
      */
     void onOKResponse(Call call, IResponse<T> response);
     /**
      * http 非200
+     * 拆分至onResponse
      */
     void onNoResponse(Call call, IResponse<T> response);
 
