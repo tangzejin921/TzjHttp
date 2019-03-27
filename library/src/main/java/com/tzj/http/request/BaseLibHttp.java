@@ -7,6 +7,7 @@ import com.tzj.http.http.IHttp;
 import com.tzj.http.http.OkHttp;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
+import com.tzj.http.response.IResponse;
 import com.tzj.http.util.UtilJSON;
 import com.tzj.http.util.UtilReplace;
 
@@ -141,5 +142,9 @@ public class BaseLibHttp implements IRequest {
             }
         }
         return null;
+    }
+
+    @Override
+    public <T> void changeRsp(IResponse<T> response) {
     }
 }
