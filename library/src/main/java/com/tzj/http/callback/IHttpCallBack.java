@@ -24,7 +24,8 @@ public interface IHttpCallBack<T> extends IType{
     IResponse response(Response response) throws IOException;
     /**
      * http 成功返回
-     * response之后调用非ui线程
+     * 在 onResponse 被非UI线程调用，
+     * 用于处理一些业务
      */
     void onPreResponse(Call call, IResponse<T> response);
     /**

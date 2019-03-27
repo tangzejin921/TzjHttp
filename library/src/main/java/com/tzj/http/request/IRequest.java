@@ -2,6 +2,7 @@ package com.tzj.http.request;
 
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
+import com.tzj.http.response.IResponse;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -72,4 +73,9 @@ public interface IRequest {
      * 名为Rsp的静态内部类
      */
     Type rspType();
+
+    /**
+     * 构建好返回体后，给个机会让 请求体对返回数据处理下
+     */
+    <T> void changeRsp(IResponse<T> response);
 }
