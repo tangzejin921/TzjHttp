@@ -113,7 +113,10 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
                     //如果item实现了接口 IListKey 将会取出其内容
                     if (IListKey.class.isAssignableFrom((Class<?>) itemType)){
                         IListKey o = ((Class<IListKey>) itemType).newInstance();
-                        object = map.get(o.listKeyName());
+                        Object value = map.get(o.listKeyName());
+                        if (value != null){
+                            object = value;
+                        }
                     }
                 }
             } catch (Exception e) {
