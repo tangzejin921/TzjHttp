@@ -2,6 +2,7 @@ package com.tzj.http.callback;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.response.HttpResponse;
@@ -116,6 +117,8 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
                         Object value = map.get(o.listKeyName());
                         if (value != null){
                             object = value;
+                        }else{
+                            object = new JSONArray();
                         }
                     }
                 }
