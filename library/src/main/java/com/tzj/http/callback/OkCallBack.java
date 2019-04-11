@@ -28,6 +28,9 @@ import okhttp3.Response;
 public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     protected IPlatformHandler mHandler = PlatformHandler.getInstance();
     protected Type type;
+    /**
+     * methed,请求方法
+     */
     protected String key;
     /**
      * 强制传 Handler 为了可以关闭
@@ -43,6 +46,9 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
 
     }
 
+    /**
+     * 将请求的静态内部类Rsp传进来
+     */
     @Override
     public void rspType(String key, Type type) {
         this.key = key;
@@ -109,7 +115,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             Type type = rspType();
             try {
                 //是List
-                if (((ParameterizedType)type).getRawType() == List.class){
+                if (type instanceof ParameterizedType && ((ParameterizedType)type).getRawType() == List.class){
                     Type itemType = ClassType.genericType(type);
                     //如果item实现了接口 IListKey 将会取出其内容
                     if (IListKey.class.isAssignableFrom((Class<?>) itemType)){
