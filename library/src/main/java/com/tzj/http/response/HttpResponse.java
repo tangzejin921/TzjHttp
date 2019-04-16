@@ -109,6 +109,14 @@ public class HttpResponse<B> implements IResponse<B>{
         return tempBody;
     }
 
+    public void httpCode(int httpCode) {
+        this.httpCode = httpCode;
+    }
+
+    public void httpMsg(String httpMsg) {
+        this.httpMsg = httpMsg;
+    }
+
     /**
      * 解析 返回的外层
      */
