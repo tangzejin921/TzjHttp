@@ -88,7 +88,24 @@ public class UtilReplace {
         return map;
     }
 
-
+    /**
+     * 出参替换
+     */
+    public static List<Map> replaceOut(List<Map> list, String key) {
+        String api = findPath("api/out", key + ".json");
+        if (api != null) {
+            try {
+                String jsonStr = getStrFromAssets(api);
+                Map<String, Object> templtate = UtilJSON.toMap(jsonStr);
+                for (Map map:list) {
+                    replaceMap(map, templtate);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
     /**
      * 出参替换
      */

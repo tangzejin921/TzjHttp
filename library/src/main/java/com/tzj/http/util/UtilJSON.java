@@ -2,6 +2,7 @@ package com.tzj.http.util;
 
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 public class UtilJSON {
@@ -14,6 +15,10 @@ public class UtilJSON {
 
     public static Map toMap(Object obj) {
         return utilJSON.toMap(obj);
+    }
+
+    public static List toList(Object obj){
+        return utilJSON.toList(obj);
     }
 
     public static String toJson(Object obj) {

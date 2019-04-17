@@ -109,27 +109,34 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     protected IResponse fillBody(IResponse<T> r){
         if (r instanceof HttpResponse && r.isOk()){
             HttpResponse res = (HttpResponse) r;
-            Map map = UtilJSON.toMap(res.tempBody().toString());
-            map = UtilReplace.replaceOut(map, key);
-            Object object = map;
-            Type type = rspType();
-            try {
-                //是List
-                if (type instanceof ParameterizedType && ((ParameterizedType)type).getRawType() == List.class){
-                    Type itemType = ClassType.genericType(type);
-                    //如果item实现了接口 IListKey 将会取出其内容
-                    if (IListKey.class.isAssignableFrom((Class<?>) itemType)){
-                        IListKey o = ((Class<IListKey>) itemType).newInstance();
-                        Object value = map.get(o.listKeyName());
-                        if (value != null){
-                            object = value;
-                        }else{
-                            object = new JSONArray();
+
+            Object object = "{}";
+            if (res.tempBody() != null && res.tempBody().toString().startsWith("[")){
+                List<Map> list = UtilJSON.toList(res.tempBody().toString());
+                object = UtilReplace.replaceOut(list, key);
+            }else{
+                Map map = UtilJSON.toMap(res.tempBody().toString());
+                object = UtilReplace.replaceOut(map, key);
+                //map 只有一个key 对应到 list 的情况
+                Type type = rspType();
+                try {
+                    //是List
+                    if (type instanceof ParameterizedType && ((ParameterizedType)type).getRawType() == List.class){
+                        Type itemType = ClassType.genericType(type);
+                        //如果item实现了接口 IListKey 将会取出其内容
+                        if (IListKey.class.isAssignableFrom((Class<?>) itemType)){
+                            IListKey o = ((Class<IListKey>) itemType).newInstance();
+                            Object value = map.get(o.listKeyName());
+                            if (value != null){
+                                object = value;
+                            }else{
+                                object = new JSONArray();
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
             String s = JSON.toJSONString(object);
