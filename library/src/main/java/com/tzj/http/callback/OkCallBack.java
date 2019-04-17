@@ -111,6 +111,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             HttpResponse res = (HttpResponse) r;
 
             Object object = "{}";
+            Type type = rspType();
             if (res.tempBody() != null && res.tempBody().toString().startsWith("[")){
                 List<Map> list = UtilJSON.toList(res.tempBody().toString());
                 object = UtilReplace.replaceOut(list, key);
@@ -118,7 +119,6 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
                 Map map = UtilJSON.toMap(res.tempBody().toString());
                 object = UtilReplace.replaceOut(map, key);
                 //map 只有一个key 对应到 list 的情况
-                Type type = rspType();
                 try {
                     //是List
                     if (type instanceof ParameterizedType && ((ParameterizedType)type).getRawType() == List.class){
@@ -139,7 +139,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
                 }
             }
             // FIXME: 2019/3/14 这里string->map->string->clss 没找到方法多转了一次
-            String s = JSON.toJSONString(object);
+            String s = UtilJSON.toJson(object);
             T body = UtilJSON.toObj(s, type);
             res.setBody(body);
         }
