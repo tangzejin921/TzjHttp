@@ -1,8 +1,7 @@
 package com.tzj.http.util;
 
+
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -24,8 +23,8 @@ public class FastJson implements IJSON {
             return (Map) obj;
         }
         Object o = JSON.toJSON(obj);
-        if (o instanceof JSONObject) {
-            return ((JSONObject) o).getInnerMap();
+        if (o instanceof Map) {
+            return ((Map) o);
         }
         return new HashMap();
     }
@@ -39,8 +38,8 @@ public class FastJson implements IJSON {
             return (List) obj;
         }
         Object o = JSON.toJSON(obj);
-        if (o instanceof JSONArray){
-            return ((JSONArray)o).subList(0,((JSONArray) o).size()-1);
+        if (o instanceof List){
+            return ((List)o);
         }
         return new ArrayList();
     }
