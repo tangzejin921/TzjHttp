@@ -13,6 +13,9 @@ public class UtilToast {
     }
 
     public static void showToast(String str) {
+        if(toast == null){
+            return;
+        }
         if (PlatformHandler.isAndroid){
             toast.showToast(str);
         }else{
@@ -21,6 +24,9 @@ public class UtilToast {
     }
 
     public static void showToast(int res) {
+        if(toast == null){
+            return;
+        }
         if (PlatformHandler.isAndroid){
             toast.showToast(res);
         }else{
