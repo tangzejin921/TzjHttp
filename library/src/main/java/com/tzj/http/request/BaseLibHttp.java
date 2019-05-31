@@ -1,6 +1,8 @@
 package com.tzj.http.request;
 
 
+import com.tzj.http.HttpApplication;
+import com.tzj.http.R;
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 import com.tzj.http.http.IHttp;
@@ -82,7 +84,10 @@ public class BaseLibHttp implements IRequest {
 
     @Override
     public Map<String, Object> replaceMap(Map<String, Object> map){
-        return UtilReplace.replaceIn(map,methed());
+        if (HttpApplication.mCtx.getResources().getBoolean(R.bool.http_change_request)){
+            return UtilReplace.replaceIn(map,methed());
+        }
+        return map;
     }
 
     @Override

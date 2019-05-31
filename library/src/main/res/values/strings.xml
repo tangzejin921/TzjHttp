@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Library</string>
+    <bool name="http_change_request">false</bool>
+    <bool name="http_change_response">false</bool>
 </resources>
