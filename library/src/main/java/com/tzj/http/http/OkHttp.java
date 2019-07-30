@@ -23,6 +23,7 @@ public class OkHttp implements IHttp {
 
     static {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .cookieJar(new StaticCookie())
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .connectTimeout(30, TimeUnit.SECONDS);
