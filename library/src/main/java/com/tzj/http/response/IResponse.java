@@ -21,6 +21,11 @@ public interface IResponse<B> {
     int code();
 
     /**
+     * http情况
+     */
+    boolean httpOk();
+
+    /**
      * 业务的
      */
     boolean isOk();

@@ -79,6 +79,11 @@ public class HttpResponse<B> implements IResponse<B>{
         return code;
     }
 
+    @Override
+    public boolean httpOk() {
+        return httpCode == 200;
+    }
+
     /**
      * 业务的
      */
@@ -122,7 +127,7 @@ public class HttpResponse<B> implements IResponse<B>{
      */
     @Override
     public IResponse<B> jsonResponse() throws IOException {
-        if (response != null){
+        if (response != null && httpOk()){
             HttpResponse res = UtilJSON.toObj(response.body().string(), getClass());
             res.httpCode = httpCode;
             res.httpMsg = httpMsg;

@@ -69,8 +69,11 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
     @Override
     public IResponse response(Response response) throws IOException {
         IResponse<T> httpResponse = new HttpResponse<>(response);
-        httpResponse = httpResponse.jsonResponse();
-        return fillBody(httpResponse);
+        //解析外层
+        httpResponse = fillHttp(httpResponse);
+        //解析内层数据
+        httpResponse = fillBody(httpResponse);
+        return httpResponse;
     }
 
     @Override
@@ -80,7 +83,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
 
     @Override
     public void onResponse(Call call, IResponse<T> response) {
-        if (response.httpCode() == 200) {
+        if (response.httpOk()) {
             onOKResponse(call, response);
         } else {
             onNoResponse(call, response);
@@ -104,6 +107,17 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
         return mHandler;
     }
 
+    /**
+     * 解析外层
+     */
+    protected IResponse fillHttp(IResponse<T> r) throws IOException {
+        //网络成功情况下
+        if (r.httpOk()){
+            //解析外层
+             r = r.jsonResponse();
+        }
+        return r;
+    }
     /**
      * 填充 body
      */
