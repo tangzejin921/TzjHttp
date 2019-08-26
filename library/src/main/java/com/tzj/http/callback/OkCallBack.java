@@ -3,7 +3,6 @@ package com.tzj.http.callback;
 
 import com.alibaba.fastjson.JSONArray;
 import com.tzj.http.HttpApplication;
-import com.tzj.http.R;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.response.HttpResponse;
@@ -129,7 +128,7 @@ public abstract class OkCallBack<T> implements IOkCallBack<T>, IType {
             Type type = rspType();
             if (res.tempBody() != null && res.tempBody().toString().startsWith("[")){
                 List<Map> list = UtilJSON.toList(res.tempBody().toString());
-                if (HttpApplication.mCtx.getResources().getBoolean(R.bool.http_change_response)){
+                if (HttpApplication.mCtx.getResources().getBoolean(HttpApplication.getRes("http_change_response","bool"))){
                     object = UtilReplace.replaceOut(list, key);
                 }else{
                     object = list;

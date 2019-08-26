@@ -2,10 +2,10 @@ package com.tzj.http.request;
 
 
 import com.tzj.http.HttpApplication;
-import com.tzj.http.R;
 import com.tzj.http.cache.CacheType;
 import com.tzj.http.callback.IHttpCallBack;
 import com.tzj.http.http.IHttp;
+import com.tzj.http.http.IProgressListener;
 import com.tzj.http.http.OkHttp;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
@@ -84,7 +84,7 @@ public class BaseLibHttp implements IRequest {
 
     @Override
     public Map<String, Object> replaceMap(Map<String, Object> map){
-        if (HttpApplication.mCtx.getResources().getBoolean(R.bool.http_change_request)){
+        if (HttpApplication.mCtx.getResources().getBoolean(HttpApplication.getRes("http_change_request","bool"))){
             return UtilReplace.replaceIn(map,methed());
         }
         return map;
@@ -107,9 +107,14 @@ public class BaseLibHttp implements IRequest {
 
     @Override
     public Request request() {
+        //放这里不大好
+        RequestBody body = okBody();
+        if (this instanceof IProgressListener){
+            body = new ProgressRequestBody(body,(IProgressListener) this);
+        }
         return new Request.Builder()
                 .url(url())
-                .post(okBody())
+                .post(body)
                 .build();
     }
 

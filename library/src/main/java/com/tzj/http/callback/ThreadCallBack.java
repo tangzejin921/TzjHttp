@@ -1,8 +1,10 @@
 package com.tzj.http.callback;
 
+import com.tzj.http.http.IProgressListener;
 import com.tzj.http.platform.IPlatformHandler;
 import com.tzj.http.platform.PlatformHandler;
 import com.tzj.http.response.IResponse;
+import com.tzj.http.response.ProgressResponseBody;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -45,6 +47,10 @@ public final class ThreadCallBack implements IHttpCallBack {
         if (handler() == null || handler().isClsed()) {
             callBack = null;
             return null;
+        }
+        if (callBack instanceof IProgressListener){
+            //加进度
+            response = response.newBuilder().body(new ProgressResponseBody(response.body(), (IProgressListener)callBack)).build();
         }
         //当前线程
         return callBack.response(response);

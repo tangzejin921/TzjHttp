@@ -16,4 +16,9 @@ public class HttpApplication extends Application {
     public static void init(Context ctx){
         mCtx = ctx;
     }
+
+    public static int getRes(String name,String type){
+        return mCtx.getResources().getIdentifier(name,type,mCtx.getPackageName());
+    }
+
 }
