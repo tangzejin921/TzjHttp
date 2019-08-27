@@ -128,15 +128,18 @@ public class HttpResponse<B> implements IResponse<B>{
     @Override
     public IResponse<B> jsonResponse() throws IOException {
         if (response != null && httpOk()){
-            HttpResponse res = UtilJSON.toObj(response.body().string(), getClass());
-            res.httpCode = httpCode;
-            res.httpMsg = httpMsg;
-            return res;
+            HttpResponse<B> res = UtilJSON.toObj(response.body().string(), getClass());
+            return res.copyFrom(this);
         }else{
             return this;
         }
     }
-
+    public HttpResponse<B> copyFrom(HttpResponse<B> res){
+        httpCode = res.httpCode;
+        httpMsg = res.httpMsg;
+        response = res.response;
+        return this;
+    }
     @Override
     public <T> List<T> keyList(String key, Class<T> c) {
         JSONObject jsonObject;

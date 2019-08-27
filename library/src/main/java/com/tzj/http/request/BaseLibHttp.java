@@ -39,6 +39,9 @@ public class BaseLibHttp implements IRequest {
     @Override
     public String methed() {
         String temp = getClass().getSimpleName().split("\\$")[0];
+        if (temp == null || temp.isEmpty()){
+            temp = getClass().getSuperclass().getSimpleName().split("\\$")[0];
+        }
         temp = temp.replaceFirst(temp.charAt(0)+"",(temp.charAt(0)+"").toLowerCase());
         //方法替换
         String str = UtilReplace.getStrFromAssets("api/methed.json");
