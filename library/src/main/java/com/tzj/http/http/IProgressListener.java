@@ -2,6 +2,8 @@ package com.tzj.http.http;
 
 /**
  * 进度
+ * 请求类    实现 IProgressListener 即可拥有进度
+ * CallBack 实现 IProgressListener 即可拥有进度
  */
 public interface IProgressListener {
     /**
